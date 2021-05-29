@@ -1,20 +1,23 @@
 package com.sicredi.restricoes;
 
+import org.junit.Before;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-
 public class RestricoesTest {
-    @Test
-    public void testDadoUmCPFComRestricaoEntaoRetornaStatusCode200(){
+    @Before
+    public void setup(){
         // Configurar o caminho comum de acesso a API REST
         baseURI = "http://localhost";
         port = 8080;
         basePath = "/api";
+    }
 
-      //Consultar CPF
+    @Test
+    public void testDadoUmCPFComRestricaoEntaoRetornaStatusCode200(){
+
      given()
              .when()
                     .get("/v1/restricoes/97093236014")
@@ -24,15 +27,13 @@ public class RestricoesTest {
     }
     @Test
     public void testDadoUmCPFSemRestricaoEntaoRetornaStatusCode204(){
-        baseURI = "http://localhost";
-        port = 8080;
-        basePath = "/api";
 
         given()
                 .when()
-                        .get("/v1/restricoes/12024991637")
+                        .get("/v1/restricoes/41281418366")
                 .then()
                     .assertThat()
                         .statusCode(204);
+
     }
 }
