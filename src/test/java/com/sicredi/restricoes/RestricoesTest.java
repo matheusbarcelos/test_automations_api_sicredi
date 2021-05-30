@@ -1,6 +1,7 @@
 package com.sicredi.restricoes;
 
 import com.sicredi.ApiSicrediTest;
+import com.sicredi.constants.Constants;
 import com.sicredi.suport.Url;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +10,8 @@ import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class RestricoesTest {
+    Constants constants = new Constants();
+
     @Before
     public void setup() {
         Url conection = new Url();
@@ -19,7 +22,7 @@ public class RestricoesTest {
 
          given()
         .when()
-                 .get("/v1/restricoes/97093236014")
+                 .get("/v1/restricoes/"+constants.getCpf_Restricao())
         .then()
                  .body("mensagem", containsString("problema"))
                  .assertThat()
@@ -30,7 +33,7 @@ public class RestricoesTest {
 
         given()
         .when()
-                .get("/v1/restricoes/41281418366")
+                .get("/v1/restricoes/"+constants.getCpf_Sem_Restricao())
         .then()
                 .assertThat()
                 .statusCode(204);

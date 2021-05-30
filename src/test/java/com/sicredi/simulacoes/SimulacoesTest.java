@@ -1,14 +1,15 @@
 package com.sicredi.simulacoes;
 
+import com.sicredi.constants.Constants;
 import com.sicredi.suport.Url;
 import io.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class SimulacoesTest {
+    Constants constants = new Constants();
     @Before
     public void setup() {
         Url conection = new Url();
@@ -20,7 +21,7 @@ public class SimulacoesTest {
 
         given()
                     .body("{\n" +
-                        "  \"nome\": \"Shaka\",\n" +
+                        "  \"nome\": \"+constants\",\n" +
                         "  \"cpf\": 12024991635,\n" +
                         "  \"email\": \"shaka@gmail.com\",\n" +
                         "  \"valor\": 1200,\n" +
@@ -88,7 +89,7 @@ public class SimulacoesTest {
                         "}")
                 .contentType(ContentType.JSON)
         .when()
-                .put("/v1/simulacoes/66414919004")
+                .put("/v1/simulacoes/"+constants.getCpf_Alterar_Simulacao())
         .then()
                 .body("nome", containsString("Fulano"))
                 .assertThat()
@@ -108,7 +109,7 @@ public class SimulacoesTest {
                         "}")
                 .contentType(ContentType.JSON)
         .when()
-                .put("/v1/simulacoes/12024991636")
+                .put("/v1/simulacoes/"+constants.getCpf_Inexistente_Simulacao())
         .then()
                 .assertThat()
                 .statusCode(404);
@@ -121,17 +122,17 @@ public class SimulacoesTest {
                 .get("/v1/simulacoes/")
         .then()
                 .assertThat()
+                .log().all()
                 .statusCode(200);
     }
-
 
     @Test
     public void testDadoUmCPFConsultaSuaSituacaoEntaoRetornaStatusCode200(){
         given()
         .when()
-                .get("/v1/simulacoes/66414919004")
+                .get("/v1/simulacoes/"+constants.getCpf_Consultar_Simulacao())
         .then()
-                .body("cpf", containsString("66414919004"))
+                .body("cpf", containsString(constants.getCpf_Consultar_Simulacao()))
                 .assertThat()
                 .statusCode(200);
     }
@@ -140,7 +141,7 @@ public class SimulacoesTest {
     public void testDadoUmCPFSemSituacaoEntaoRetornaStatusCode404(){
         given()
         .when()
-                .get("/v1/simulacoes/66414919000")
+                .get("/v1/simulacoes/"+constants.getCpf_Invalido_Simulacao())
         .then()
                 .assertThat()
                 .statusCode(404);
