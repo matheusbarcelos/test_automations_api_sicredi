@@ -1,5 +1,6 @@
 package com.sicredi.restricoes;
 
+import com.sicredi.ApiSicrediTest;
 import org.junit.Before;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;

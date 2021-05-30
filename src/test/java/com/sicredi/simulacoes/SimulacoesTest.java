@@ -134,6 +134,39 @@ public class SimulacoesTest {
                 .statusCode(200);
     }
 
+    @Test
+    public void testDadoUmCPFSemSituacaoEntaoRetornaStatusCode404(){
+        given()
+                .when()
+                .get("/v1/simulacoes/66414919000")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(404);
+    }
+
+    @Test
+    public void testDadoUmIDRemoveSuaSituacaoEntaoRetornaStatusCode200(){
+        given()
+                .when()
+                .delete("/v1/simulacoes/12")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200);
+    }
+
+    @Test
+    public void testDadoUmIDInexistenteTentarDeletarOMesmoEntaoRetornaStatusCode404(){
+        given()
+                .when()
+                .delete("/v1/simulacoes/-1")
+                .then()
+                .log().all()
+                .assertThat()
+                .statusCode(404);
+    }
+
 }
 
 
