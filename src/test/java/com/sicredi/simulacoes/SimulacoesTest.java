@@ -21,7 +21,7 @@ public class SimulacoesTest {
         given()
                     .body("{\n" +
                         "  \"nome\": \"Shaka\",\n" +
-                        "  \"cpf\": 15438528587,\n" +
+                        "  \"cpf\": 12024991635,\n" +
                         "  \"email\": \"shaka@gmail.com\",\n" +
                         "  \"valor\": 1200,\n" +
                         "  \"parcelas\": 3,\n" +
@@ -31,6 +31,7 @@ public class SimulacoesTest {
         .when()
                     .post("/v1/simulacoes")
         .then()
+                    .body("cpf", containsString("12024991635"))
                     .assertThat()
                     .statusCode(201);
     }
@@ -43,15 +44,14 @@ public class SimulacoesTest {
                         "  \"cpf\": 97093236014,\n" +
                         "  \"email\": \"shaka@gmail.com\",\n" +
                         "  \"valor\": 1200,\n" +
-                        "  \"parcelas\": 3,\n" +
-                        "  \"seguro\": true\n" +
                         "}")
                 .contentType(ContentType.JSON)
        .when()
                 .post("/v1/simulacoes")
        .then()
                 .assertThat()
-                .statusCode(400);
+                .statusCode(400)
+                .log().all();
     }
 
     @Test
@@ -84,12 +84,13 @@ public class SimulacoesTest {
                         "  \"email\": \"teste@gmail.com\",\n" +
                         "  \"valor\": 5000,\n" +
                         "  \"parcelas\": 5,\n" +
-                        "  \"seguro\": true\n" +
+                        "  \"seguro\": false\n" +
                         "}")
                 .contentType(ContentType.JSON)
         .when()
                 .put("/v1/simulacoes/66414919004")
         .then()
+                .body("nome", containsString("Fulano"))
                 .assertThat()
                 .statusCode(200);
     }
@@ -119,7 +120,6 @@ public class SimulacoesTest {
         .when()
                 .get("/v1/simulacoes/")
         .then()
-                .log().all()
                 .assertThat()
                 .statusCode(200);
     }
@@ -131,7 +131,7 @@ public class SimulacoesTest {
         .when()
                 .get("/v1/simulacoes/66414919004")
         .then()
-                .log().all()
+                .body("cpf", containsString("66414919004"))
                 .assertThat()
                 .statusCode(200);
     }
@@ -155,9 +155,6 @@ public class SimulacoesTest {
                 .assertThat()
                 .statusCode(200);
     }
-
-
-
 }
 
 

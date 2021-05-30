@@ -21,9 +21,9 @@ public class RestricoesTest {
         .when()
                  .get("/v1/restricoes/97093236014")
         .then()
+                 .body("mensagem", containsString("problema"))
                  .assertThat()
                  .statusCode(200);
-
     }
     @Test
     public void testDadoUmCPFSemRestricaoEntaoRetornaStatusCode204(){
