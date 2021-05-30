@@ -1,0 +1,6 @@
+com\sicredi\restricoes\RestricoesContants.class
+com\sicredi\restricoes\RestricoesTest.class
+com\sicredi\simulacoes\SimulacoesTest.class
+com\sicredi\ApiSicrediTest.class
+com\sicredi\suport\Url.class
+com\sicredi\simulacoes\SimulacoesConstants.class
