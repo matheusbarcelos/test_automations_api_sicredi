@@ -18,7 +18,6 @@ public class SimulacoesTest {
 
     @Test
     public void testDadoUmCadastroInsereUmaSimulacaoEntaoRetornaStatusCode201() {
-
         given()
                     .body("{\n" +
                         "  \"nome\": \"+constants\",\n" +
@@ -32,7 +31,7 @@ public class SimulacoesTest {
         .when()
                     .post("/v1/simulacoes")
         .then()
-                    .body("cpf", containsString("12024991635"))
+                    .body("cpf", containsString(constants.getCpf_Insere_Simulacao()))
                     .assertThat()
                     .statusCode(201);
     }
@@ -51,8 +50,7 @@ public class SimulacoesTest {
                 .post("/v1/simulacoes")
        .then()
                 .assertThat()
-                .statusCode(400)
-                .log().all();
+                .statusCode(400);
     }
 
     @Test
@@ -73,8 +71,6 @@ public class SimulacoesTest {
                 .assertThat()
                 .statusCode(400);
     }
-
-
 
     @Test
     public void testDadoUmCPFAltereUmaSimulacaoExistenteEntaoRetornaStatusCode200() {
@@ -122,7 +118,6 @@ public class SimulacoesTest {
                 .get("/v1/simulacoes/")
         .then()
                 .assertThat()
-                .log().all()
                 .statusCode(200);
     }
 
@@ -151,7 +146,7 @@ public class SimulacoesTest {
     public void testDadoUmIDRemoveSuaSituacaoEntaoRetornaStatusCode200(){
         given()
         .when()
-                .delete("/v1/simulacoes/12")
+                .delete("/v1/simulacoes/"+constants.getId())
         .then()
                 .assertThat()
                 .statusCode(200);

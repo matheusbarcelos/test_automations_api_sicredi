@@ -7,6 +7,8 @@ public class Constants {
     private String cpf_Consultar_Simulacao = "66414919004";
     private String cpf_Invalido_Simulacao = "66414919000";
     private String cpf_Inexistente_Simulacao = "12024991636";
+    private String cpf_Insere_Simulacao = "12024991635";
+    private Integer id = 12;
 
 
     public String getCpf_Restricao() {
@@ -44,6 +46,18 @@ public class Constants {
     }
     public void setCpf_Inexistente_Simulacao(String cpf_Inexistente_Simulacao) {
         this.cpf_Inexistente_Simulacao = cpf_Inexistente_Simulacao;
+    }
+    public String getCpf_Insere_Simulacao() {
+        return cpf_Insere_Simulacao;
+    }
+    public void setCpf_Insere_Simulacao(String cpf_Insere_Simulacao) {
+        this.cpf_Insere_Simulacao = cpf_Insere_Simulacao;
+    }
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 
