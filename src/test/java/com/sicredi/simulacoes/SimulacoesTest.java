@@ -1,5 +1,6 @@
 package com.sicredi.simulacoes;
 
+import com.sicredi.suport.Url;
 import io.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,29 +11,28 @@ import static org.hamcrest.Matchers.*;
 public class SimulacoesTest {
     @Before
     public void setup() {
-        // Configurar o caminho comum de acesso a API REST
-        baseURI = "http://localhost";
-        port = 8080;
-        basePath = "/api";
+        Url conection = new Url();
+        conection.baseApi();
     }
 
     @Test
     public void testDadoUmCadastroInsereUmaSimulacaoEntaoRetornaStatusCode201() {
+
         given()
-                .body("{\n" +
+                    .body("{\n" +
                         "  \"nome\": \"Shaka\",\n" +
-                        "  \"cpf\": 97093236014,\n" +
+                        "  \"cpf\": 15438528587,\n" +
                         "  \"email\": \"shaka@gmail.com\",\n" +
                         "  \"valor\": 1200,\n" +
                         "  \"parcelas\": 3,\n" +
                         "  \"seguro\": true\n" +
                         "}")
-                .contentType(ContentType.JSON)
-                .when()
-                .post("/v1/simulacoes")
-                .then()
-                .assertThat()
-                .statusCode(201);
+                    .contentType(ContentType.JSON)
+        .when()
+                    .post("/v1/simulacoes")
+        .then()
+                    .assertThat()
+                    .statusCode(201);
     }
 
     @Test
@@ -47,22 +47,22 @@ public class SimulacoesTest {
                         "  \"seguro\": true\n" +
                         "}")
                 .contentType(ContentType.JSON)
-                .when()
+       .when()
                 .post("/v1/simulacoes")
-                .then()
+       .then()
                 .assertThat()
-                .statusCode(409);
+                .statusCode(400);
     }
 
     @Test
-    public void testDadoUmCadastroExistenteAoInserirUmaSimulacaoEntaoRetornaStatusCode409() {
+    public void testDadoUmCadastroComAtributosIncorretosAoInserirUmaSimulacaoRetornaStatusCode400(){
         given()
                 .body("{\n" +
-                        "  \"nome\": \"Matheus\",\n" +
-                        "  \"cpf\": 12024991637,\n" +
-                        "  \"email\": \"shaka@gmail.com\",\n" +
-                        "  \"valor\": 1200,\n" +
-                        "  \"parcelas\": 3,\n" +
+                        "  \"nome\": \"Pedro\",\n" +
+                        "  \"cpf\": 84746766657,\n" +
+                        "  \"email\": \"pedro@gmail.com\",\n" +
+                        "  \"valor\": 900,\n" +
+                        "  \"parcelas\": 1,\n" +
                         "  \"seguro\": true\n" +
                         "}")
                 .contentType(ContentType.JSON)
@@ -70,20 +70,10 @@ public class SimulacoesTest {
                 .post("/v1/simulacoes")
                 .then()
                 .assertThat()
-                .statusCode(409);
+                .statusCode(400);
     }
 
 
-    @Test
-    public void testRetornarSimulacoesCadastradas() {
-        given()
-                .when()
-                .get("/v1/simulacoes/")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(200);
-    }
 
     @Test
     public void testDadoUmCPFAltereUmaSimulacaoExistenteEntaoRetornaStatusCode200() {
@@ -97,15 +87,15 @@ public class SimulacoesTest {
                         "  \"seguro\": true\n" +
                         "}")
                 .contentType(ContentType.JSON)
-                .when()
+        .when()
                 .put("/v1/simulacoes/66414919004")
-                .then()
+        .then()
                 .assertThat()
                 .statusCode(200);
     }
 
     @Test
-    public void testDadoUmCPFInexistenteEntaoRetornaStatusCode404() {
+    public void testDadoUmCPFInexistenteEfetuarAlteracaoEntaoRetornaStatusCode404() {
         given()
                 .body("{\n" +
                         "  \"nome\": \"Fulano\",\n" +
@@ -116,19 +106,31 @@ public class SimulacoesTest {
                         "  \"seguro\": true\n" +
                         "}")
                 .contentType(ContentType.JSON)
-                .when()
+        .when()
                 .put("/v1/simulacoes/12024991636")
-                .then()
+        .then()
                 .assertThat()
                 .statusCode(404);
     }
 
     @Test
+    public void testRetornarSimulacoesCadastradas() {
+        given()
+        .when()
+                .get("/v1/simulacoes/")
+        .then()
+                .log().all()
+                .assertThat()
+                .statusCode(200);
+    }
+
+
+    @Test
     public void testDadoUmCPFConsultaSuaSituacaoEntaoRetornaStatusCode200(){
         given()
-                .when()
+        .when()
                 .get("/v1/simulacoes/66414919004")
-                .then()
+        .then()
                 .log().all()
                 .assertThat()
                 .statusCode(200);
@@ -137,10 +139,9 @@ public class SimulacoesTest {
     @Test
     public void testDadoUmCPFSemSituacaoEntaoRetornaStatusCode404(){
         given()
-                .when()
+        .when()
                 .get("/v1/simulacoes/66414919000")
-                .then()
-                .log().all()
+        .then()
                 .assertThat()
                 .statusCode(404);
     }
@@ -148,24 +149,14 @@ public class SimulacoesTest {
     @Test
     public void testDadoUmIDRemoveSuaSituacaoEntaoRetornaStatusCode200(){
         given()
-                .when()
+        .when()
                 .delete("/v1/simulacoes/12")
-                .then()
-                .log().all()
+        .then()
                 .assertThat()
                 .statusCode(200);
     }
 
-    @Test
-    public void testDadoUmIDInexistenteTentarDeletarOMesmoEntaoRetornaStatusCode404(){
-        given()
-                .when()
-                .delete("/v1/simulacoes/-1")
-                .then()
-                .log().all()
-                .assertThat()
-                .statusCode(404);
-    }
+
 
 }
 
